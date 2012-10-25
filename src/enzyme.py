@@ -1,3 +1,5 @@
+import bases
+
 aminoacids = frozenset(
     [   
         'cut', # cut strand(s)
@@ -24,9 +26,22 @@ class NotInSet(ValueError):
 class NotAString(TypeError):
     pass
 
+class InvalidBinding(ValueError):
+    pass
+
+class Binding:
+    """It's a preference of enzyme to attach to some particular base"""
+    def __init__(self, source):
+        try:
+            self.binding = frozenset(source)
+            if not self.binding.issubset(bases.bases):
+                raise ValueError
+        except (ValueError, TypeError):
+            raise InvalidBinding
+
 class Enzyme:
     """It's a machine operating on strands by means of instructions--Amino Acids"""
-    def __init__(self, commands):
+    def __init__(self, commands, binding):
         try:
             for item in commands:
                 if not isinstance(item, str):
@@ -37,3 +52,4 @@ class Enzyme:
         except TypeError:
             raise
         self.commands = commands
+        self.binding = Binding(binding)
