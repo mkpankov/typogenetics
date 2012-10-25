@@ -1,6 +1,6 @@
 bases = frozenset(['A', 'C', 'G', 'T'])
 
-class IncorrectString(ValueError):
+class NotInSet(ValueError):
     pass
 
 class NotAString(TypeError):
@@ -12,7 +12,7 @@ class Strand:
     def __init__(self, string):
         if isinstance(string, str):
             if not frozenset(string).issubset(bases):
-                raise IncorrectString
+                raise NotInSet
         else:
             raise NotAString
 

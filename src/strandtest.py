@@ -27,7 +27,7 @@ class StrandTest(unittest.TestCase):
 
     def testIncorrectCreationBadString(self):
         """Strand should raise an exception in case of bad string"""
-        self.assertRaises(strand.IncorrectString, strand.Strand, 'BCDE')
+        self.assertRaises(strand.NotInSet, strand.Strand, 'BCDE')
     def testIncorrectCreationNotAString(self):
         """Strand should raise an exception in case of not a string"""
         self.assertRaises(strand.NotAString, strand.Strand, 42)
