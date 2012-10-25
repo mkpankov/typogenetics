@@ -7,6 +7,8 @@ class NotAString(TypeError):
     pass
 
 class Strand:
+    """It's a sequence of units, occupied by bases.
+    Simply speaking, string of 'ACGT'."""
     def __init__(self, string):
         if isinstance(string, str):
             if not frozenset(string).issubset(bases):
