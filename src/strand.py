@@ -1,4 +1,4 @@
-bases = frozenset(['A', 'C', 'G', 'T'])
+import bases
 
 class NotInSet(ValueError):
     pass
@@ -11,7 +11,7 @@ class Strand:
     Simply speaking, string of 'ACGT'."""
     def __init__(self, string):
         if isinstance(string, str):
-            if not frozenset(string).issubset(bases):
+            if not frozenset(string).issubset(bases.bases):
                 raise NotInSet
         else:
             raise NotAString

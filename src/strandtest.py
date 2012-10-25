@@ -3,6 +3,7 @@
 """Unit test for strand.py"""
 
 import strand
+import bases
 import unittest
 import itertools
 
@@ -10,7 +11,7 @@ class BasesCheck(unittest.TestCase):
     correct_bases = frozenset(['A', 'C', 'G', 'T'])
     def test(self):
         """It should be just that set"""
-        self.assertEqual(self.correct_bases, strand.bases)
+        self.assertEqual(self.correct_bases, bases.bases)
 
 class StrandTest(unittest.TestCase):
     correct_bases = frozenset(['A', 'C', 'G', 'T'])
