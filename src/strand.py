@@ -9,15 +9,15 @@ class NotAString(TypeError):
 class Strand:
     def __init__(self, string):
         if isinstance(string, str):
-            if frozenset(string) != bases:
+            if not frozenset(string).issubset(bases):
                 raise IncorrectString
         else:
             raise NotAString
 
-        self.contents = string
+        self.units = string
 
     def __repr__(self):
-        return 'Strand("{0}")'.format(self.contents)
+        return 'Strand("{0}")'.format(self.units)
 
     def __str__(self):
-        return 'Strand("{0}")'.format(self.contents)
+        return 'Strand("{0}")'.format(self.units)
