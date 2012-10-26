@@ -45,6 +45,56 @@ names = {
     'TT':'lpu',
 }
 
+def spa():
+    pass
+
+def cut():
+    pass
+
+def dlt():
+    pass
+
+def swi():
+    pass
+
+def mvr():
+    pass
+
+def mvl():
+    pass
+
+def cop():
+    pass
+
+def off():
+    pass
+
+def ina():
+    pass
+
+def inc():
+    pass
+
+def ing():
+    pass
+
+# Warning: may cause trouble because of 'int' type!
+def int():
+    pass
+
+def rpy():
+    pass
+
+def rpu():
+    pass
+
+def lpy():
+    pass
+
+def lpu():
+    pass
+
+
 class Aminoacid:
     def __init__(self, duplet):
         if duplet in names.keys():
@@ -64,4 +114,4 @@ class Aminoacid:
                     raise NotInSet
                 else:
                     raise NotAString
-                
+        self.method = eval(self.name)

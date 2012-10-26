@@ -20,12 +20,13 @@ class AminoAcidsCheck(unittest.TestCase):
         self.assertEquals(aminoacid.aminoacids, aminoacids)
     def testAminoAcidCorrectCreation(self):
         """Aminoacid is successfully created from a duplet of units"""
-        a = aminoacid.Aminoacid('AC')
-        self.assertEquals(a.name, 'cut')
+        a = aminoacid.Aminoacid('TC')
+        self.assertEquals(a.name, 'rpu')
     def testAminoAcidCorrectCreationByName(self):
         """Aminoacid is successfully created by name"""
         a = aminoacid.Aminoacid('rpu')
         self.assertEquals(a.name, 'rpu')
+        self.assertIs(a.method, aminoacid.rpu)
     def testAminoAcidSaneCreation(self):
         """Aminoacid is created from any correct duplet"""
         for tup in itertools.product('ACGT', repeat=2):
