@@ -20,5 +20,37 @@ aminoacids = {
     'lpu':'l', # search for the nearest purine to the left
 }
 
-class Aminoacid:
+class NotInSet(ValueError):
     pass
+
+class NotAString(ValueError):
+    pass
+
+names = {
+    'AA':' ',
+    'AC':'cut',
+    'AG':'del',
+    'AT':'swi',
+    'CA':'mvr',
+    'CC':'mvl',
+    'CG':'cop',
+    'CT':'off',
+    'GA':'ina',
+    'GC':'inc',
+    'GG':'ing',
+    'GT':'int',
+    'TA':'rpy',
+    'TC':'rpu',
+    'TG':'lpy',
+    'TT':'lpu',
+}
+
+class Aminoacid:
+    def __init__(self, duplet):
+        try:
+            self.name = names[duplet]
+        except KeyError:
+            if isinstance(duplet, str):
+                raise NotInSet
+            else:
+                raise NotAString

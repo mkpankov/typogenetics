@@ -4,7 +4,7 @@
 
 from strandtest import *
 from enzymetest import *
-from aminoacid import *
+from aminoacidtest import *
 
 import unittest
 
