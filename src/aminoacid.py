@@ -27,7 +27,7 @@ class NotAString(ValueError):
     pass
 
 names = {
-    'AA':' ',
+    'AA':'spa',
     'AC':'cut',
     'AG':'dlt',
     'AT':'swi',
