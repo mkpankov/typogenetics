@@ -5,17 +5,6 @@
 import enzyme
 import unittest
 
-class AminoAcidsCheck(unittest.TestCase):
-    def testAminoAcidsSet(self):
-        """Aminoacids is fixed set of commands"""
-        aminoacids = frozenset(
-            [
-                'cut', 'del', 'swi', 'mvr', 'mvl', 'cop', 'off', 
-                'ina', 'inc', 'ing', 'int', 'rpy', 'rpu', 'lpy', 'lpu', 
-            ]
-        )
-        self.assertEquals(enzyme.aminoacids, aminoacids)
-
 class EnzymeCheck(unittest.TestCase):
     def testCorrectCreation(self):
         """Enzyme is created from an iterable with commands"""

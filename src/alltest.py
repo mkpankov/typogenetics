@@ -4,6 +4,8 @@
 
 from strandtest import *
 from enzymetest import *
+from aminoacid import *
+
 import unittest
 
 if __name__ == "__main__":
