@@ -47,10 +47,21 @@ names = {
 
 class Aminoacid:
     def __init__(self, duplet):
-        try:
-            self.name = names[duplet]
-        except KeyError:
-            if isinstance(duplet, str):
-                raise NotInSet
+        if duplet in names.keys():
+            try:
+                self.name = names[duplet]
+            except KeyError:
+                if isinstance(duplet, str):
+                    raise NotInSet
+                else:
+                    raise NotAString
+        else:
+            name = duplet
+            if name in aminoacids.keys():
+                self.name = name
             else:
-                raise NotAString
+                if isinstance(duplet, str):
+                    raise NotInSet
+                else:
+                    raise NotAString
+                
