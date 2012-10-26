@@ -7,7 +7,7 @@ import unittest
 import itertools
 
 aminoacids = {
-    'cut':'s', 'del':'s', 'swi':'r', 'mvr':'s', 
+    'cut':'s', 'dlt':'s', 'swi':'r', 'mvr':'s', 
     'mvl':'s', 'cop':'r', 'off':'l', 
     'ina':'s', 'inc':'r', 'ing':'r', 'int':'l', 
     'rpy':'r', 'rpu':'l', 'lpy':'l', 'lpu':'l', 

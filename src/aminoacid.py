@@ -4,7 +4,7 @@ import bases
 
 aminoacids = {
     'cut':'s', # cut strand(s)
-    'del':'s', # delete base from strand
+    'dlt':'s', # dltete base from strand
     'swi':'r', # switch enzyme to other strand
     'mvr':'s', # move one unit to the right
     'mvl':'s', # move one unit to the left
@@ -29,7 +29,7 @@ class NotAString(ValueError):
 names = {
     'AA':' ',
     'AC':'cut',
-    'AG':'del',
+    'AG':'dlt',
     'AT':'swi',
     'CA':'mvr',
     'CC':'mvl',

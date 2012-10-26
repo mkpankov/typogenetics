@@ -8,12 +8,12 @@ import unittest
 class EnzymeCheck(unittest.TestCase):
     def testCorrectCreation(self):
         """Enzyme is created from an iterable with commands"""
-        commands = ['cut', 'del', 'swi']
+        commands = ['cut', 'dlt', 'swi']
         e = enzyme.Enzyme(commands, 'A')
         self.assertEquals(e.commands, commands)
     def testTotalCreation(self):
         """Enzyme is created with all possible commands"""
-        commands = ['cut', 'del', 'swi', 'mvr', 'mvl', 'cop', 'off',
+        commands = ['cut', 'dlt', 'swi', 'mvr', 'mvl', 'cop', 'off',
                     'ina', 'inc', 'ing', 'int', 'rpy', 'rpu', 'lpy', 'lpu']
         e = enzyme.Enzyme(commands, 'A')
         self.assertEquals(e.commands, commands)
