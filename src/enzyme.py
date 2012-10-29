@@ -34,3 +34,6 @@ class Enzyme:
             raise
         self.commands = commands
         self.binding = Binding(binding)
+
+def translate(enzyme, strand, locus_string):
+    pass
