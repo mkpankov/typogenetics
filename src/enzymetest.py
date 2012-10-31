@@ -5,7 +5,7 @@
 import enzyme
 import unittest
 
-class EnzymeCheck(unittest.TestCase):
+class EnzymeCreationCheck(unittest.TestCase):
     def testCorrectCreation(self):
         """Enzyme is created from an iterable with commands"""
         commands = ['cut', 'dlt', 'swi']
