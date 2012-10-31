@@ -24,6 +24,15 @@ class EnzymeCreationCheck(unittest.TestCase):
     def testIncorrectCreationNotIterable(self):
         self.assertRaises(TypeError, enzyme.Enzyme, 42, 'A')
 
+class EnzymeFindLocusCheck(unittest.TestCase):
+    def testCorrectRun(self):
+        """Successfull locus search"""
+        locus_string = 'TAGATCCA|GTCCACATCGA'
+        commands = ['cut', 'dlt', 'swi']
+        e = enzyme.Enzyme(commands, 'G')
+        e.find_locus()
+        self.assertEquals(e.locus, locus_string.find('|'))
+
 class BindingCheck(unittest.TestCase):
     def testCorrectCreationSingle(self):
         """Correct binding created"""
