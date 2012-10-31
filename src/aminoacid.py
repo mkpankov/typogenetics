@@ -78,7 +78,6 @@ def inc():
 def ing():
     pass
 
-# Warning: may cause trouble because of 'int' type!
 def int():
     pass
 
