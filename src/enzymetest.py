@@ -3,6 +3,8 @@
 """Unit test for enzyme.py"""
 
 import enzyme
+import strand
+import utility
 import unittest
 
 class EnzymeCreationCheck(unittest.TestCase):
@@ -24,24 +26,37 @@ class EnzymeCreationCheck(unittest.TestCase):
     def testIncorrectCreationNotIterable(self):
         self.assertRaises(TypeError, enzyme.Enzyme, 42, 'A')
 
-class EnzymeFindLocusCheck(unittest.TestCase):
+class EnzymeAttachCheck(unittest.TestCase):
     def testCorrectRun(self):
-        """Successfull locus search"""
-        locus_string = 'TAGATCCA|GTCCACATCGA'
-        commands = ['cut', 'dlt', 'swi']
-        e = enzyme.Enzyme(commands, 'G')
-        e.find_locus()
-        self.assertEquals(e.locus, locus_string.find('|'))
+        """Successfull attachment should set strand and locus"""
+        string = 'TAGATCCAGTCCATGCA'
+        s = strand.Strand(string)
+        binding = 'G'
+        e = enzyme.Enzyme(['int'], binding)
+        d = utility.string_chars_indices(string)
+        locus = 1 # sets index of unit to bind to
+        e.attach(s, locus)
+        self.assertEquals(e.locus, d[binding][locus])
+        self.assertEquals(e.strand, s)
+    def testIncorrectRun(self):
+        """Invalid attachment should raise exception"""
+        string = 'TAGATCCATCCATCA' # only one 'G'
+        s = strand.Strand(string)
+        binding = 'G'
+        e = enzyme.Enzyme(['int'], binding)
+        d = utility.string_chars_indices(string)
+        locus = 1 # sets index of unit to bind to; second 'G' assumed
+        self.assertRaises(enzyme.InvalidLocus, e.attach, s, locus)
 
 class BindingCheck(unittest.TestCase):
     def testCorrectCreationSingle(self):
         """Correct binding created"""
         b = enzyme.Binding('A')
-        self.assertEquals(b.binding, frozenset('A'))
+        self.assertEquals(b.value, frozenset('A'))
     def testCorrectCreationIterable(self):
         """Correct binding created from iterable"""
         b = enzyme.Binding('AT')
-        self.assertEquals(b.binding, frozenset('AT'))
+        self.assertEquals(b.value, frozenset('AT'))
     def testIncorrectCreationNotInSet(self):
         """Exception is raised when wrong string is passed"""
         self.assertRaises(enzyme.InvalidBinding, enzyme.Binding, 'BC')
