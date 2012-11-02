@@ -5,6 +5,7 @@
 from strandtest import *
 from enzymetest import *
 from aminoacidtest import *
+from utilitytest import *
 
 import unittest
 
