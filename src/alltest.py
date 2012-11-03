@@ -6,6 +6,7 @@ from strandtest import *
 from enzymetest import *
 from aminoacidtest import *
 from utilitytest import *
+from translationtest import *
 
 import unittest
 

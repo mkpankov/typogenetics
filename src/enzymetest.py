@@ -38,6 +38,7 @@ class EnzymeAttachCheck(unittest.TestCase):
         e.attach(s, locus)
         self.assertEquals(e.locus, d[binding][locus])
         self.assertEquals(e.strand, s)
+        self.assertEquals(e.status, 'attached')
     def testIncorrectRun(self):
         """Invalid attachment should raise exception"""
         string = 'TAGATCCATCCATCA' # only one 'G'

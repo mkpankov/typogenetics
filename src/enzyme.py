@@ -29,6 +29,9 @@ def get_single_from_frozenset(fs):
         return i
 assert get_single_from_frozenset(frozenset('A')) == 'A'
 
+class NotAttached(RuntimeError):
+    pass
+
 class Enzyme:
     """It's a machine operating on strands by means of instructions--Amino Acids"""
     def __init__(self, commands, binding):
@@ -45,13 +48,36 @@ class Enzyme:
         if len(binding) > 1:
             raise NotImplemented
         self.binding = Binding(binding)
+        self.status = 'not attached'
+        self.mode = 'no copy'
     def attach(self, strand, locus):
         try:
             self.strand = strand
+            # this extracts number of the character, 
+            # which is binding for the enzyme, out of strand, 
+            # considering locus as index in list of all such characters
             self.locus = utility.string_chars_indices(strand.units)\
                 [get_single_from_frozenset(self.binding.value)][locus]
+            self.status = 'attached'
         except IndexError:
             raise InvalidLocus
 
-def translate(enzyme, strand, locus_string):
-    pass
+    def translate(self):
+        if self.status is None or self.status != 'attached':
+            raise NotAttached
+        production = self.strand.units
+        for a in self.commands:
+            c = aminoacid.classes[a]
+            f = getattr(aminoacid, a)
+            if c == 'pun':
+                yield production
+                production = ''
+            elif c == 'str':
+                production = f(production, self.locus)
+            elif c == 'vd-':
+                production, self.locus = f(production, self.locus)
+            elif c == 'lcs':
+                self.locus = f(self.locus)
+            elif c == 'md-':
+                self.mode = f(self.mode)
+        yield production

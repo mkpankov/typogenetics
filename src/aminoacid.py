@@ -45,23 +45,52 @@ names = {
     'TT':'lpu',
 }
 
+# Classes are:
+#   1. Punctuation 'pun'
+#   2. Strand manipulation 'str'
+#   3. Manipulation on strand units with no supposed return value 'vd-'
+#       Although it still returns production itself.
+#   4. Locus manipulation 'lcs'
+#   5. Mode manipulation 'md-'
+classes = {
+    'spa':'pun',
+    'cut':'str',
+    'dlt':'vd-',
+    'swi':'md-',
+    'mvr':'lcs',
+    'mvl':'lcs',
+    'cop':'md-',
+    'off':'md-',
+    'ina':'vd-',
+    'inc':'vd-',
+    'ing':'vd-',
+    'int':'vd-',
+    'rpy':'lcs',
+    'rpu':'lcs',
+    'lpy':'lcs',
+    'lpu':'lcs',
+}
+
 def spa():
     pass
 
-def cut():
-    pass
+def cut(strand, locus):
+    return frozenset([strand[:locus],strand[locus:]])
+assert cut('ABCD',2) == frozenset(['AB', 'CD'])
 
-def dlt():
-    pass
+def dlt(strand, locus):
+    return strand[:locus] + strand[locus+1:], locus
+assert dlt('ABCDBCA',4) == ('ABCDCA',4)
+assert dlt('ACA',0) == ('CA',0)
 
 def swi():
     pass
 
-def mvr():
-    pass
+def mvr(locus):
+    return locus + 1
 
-def mvl():
-    pass
+def mvl(locus):
+    return locus - 1
 
 def cop():
     pass
@@ -69,17 +98,21 @@ def cop():
 def off():
     pass
 
-def ina():
-    pass
+def ina(strand, locus):
+    return strand[:locus+1] + 'A' + strand[locus+1:], locus
+assert ina('ABCDEFP',3) == ('ABCDAEFP', 3)
 
-def inc():
-    pass
+def inc(strand, locus):
+    return strand[:locus+1] + 'C' + strand[locus+1:], locus
+assert inc('ABCDEFP',3) == ('ABCDCEFP', 3)
 
-def ing():
-    pass
+def ing(strand, locus):
+    return strand[:locus+1] + 'G' + strand[locus+1:], locus
+assert ing('ABCDEFP',3) == ('ABCDGEFP', 3)
 
-def int():
-    pass
+def int(strand, locus):
+    return strand[:locus+1] + 'T' + strand[locus+1:], locus
+assert int('ABCDEFP',3) == ('ABCDTEFP', 3)
 
 def rpy():
     pass
