@@ -12,7 +12,7 @@ class TranslationTest(unittest.TestCase):
         """Strand is translated by enzyme to produce set of new strands"""
         string = 'ACA'
         s = strand.Strand(string)
-        e = enzyme.Enzyme(['dlt', 'mvr', 'int'], 'A')
+        e = enzyme.Enzyme(['dlt', 'mvr', 'itt'], 'A')
         locus = 0
         e.attach(s, locus)
         result = list(e.translate())[0]

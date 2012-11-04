@@ -13,7 +13,7 @@ aminoacids = {
     'ina':'s', # insert A to the right of this unit
     'inc':'r', # insert C to the right of this unit
     'ing':'r', # insert G to the right of this unit
-    'int':'l', # insert T to the right of this unit
+    'itt':'l', # insert T to the right of this unit
     'rpy':'r', # search for the nearest pyrimidine to the right
     'rpu':'l', # search for the nearest purine to the right
     'lpy':'l', # search for the nearest pyrimidine to the left
@@ -38,7 +38,7 @@ names = {
     'GA':'ina',
     'GC':'inc',
     'GG':'ing',
-    'GT':'int',
+    'GT':'itt',
     'TA':'rpy',
     'TC':'rpu',
     'TG':'lpy',
@@ -64,7 +64,7 @@ classes = {
     'ina':'vd-',
     'inc':'vd-',
     'ing':'vd-',
-    'int':'vd-',
+    'itt':'vd-',
     'rpy':'lcs',
     'rpu':'lcs',
     'lpy':'lcs',
@@ -110,9 +110,9 @@ def ing(strand, locus):
     return strand[:locus+1] + 'G' + strand[locus+1:], locus
 assert ing('ABCDEFP',3) == ('ABCDGEFP', 3)
 
-def int(strand, locus):
+def itt(strand, locus):
     return strand[:locus+1] + 'T' + strand[locus+1:], locus
-assert int('ABCDEFP',3) == ('ABCDTEFP', 3)
+assert itt('ABCDEFP',3) == ('ABCDTEFP', 3)
 
 def rpy():
     pass

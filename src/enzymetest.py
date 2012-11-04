@@ -16,7 +16,7 @@ class EnzymeCreationCheck(unittest.TestCase):
     def testTotalCreation(self):
         """Enzyme is created with all possible commands"""
         commands = ['cut', 'dlt', 'swi', 'mvr', 'mvl', 'cop', 'off',
-                    'ina', 'inc', 'ing', 'int', 'rpy', 'rpu', 'lpy', 'lpu']
+                    'ina', 'inc', 'ing', 'itt', 'rpy', 'rpu', 'lpy', 'lpu']
         e = enzyme.Enzyme(commands, 'A')
         self.assertEquals(e.commands, commands)
     def testIncorrectCreationStringNotInSet(self):
@@ -32,7 +32,7 @@ class EnzymeAttachCheck(unittest.TestCase):
         string = 'TAGATCCAGTCCATGCA'
         s = strand.Strand(string)
         binding = 'G'
-        e = enzyme.Enzyme(['int'], binding)
+        e = enzyme.Enzyme(['itt'], binding)
         d = utility.string_chars_indices(string)
         locus = 1 # sets index of unit to bind to
         e.attach(s, locus)
@@ -44,7 +44,7 @@ class EnzymeAttachCheck(unittest.TestCase):
         string = 'TAGATCCATCCATCA' # only one 'G'
         s = strand.Strand(string)
         binding = 'G'
-        e = enzyme.Enzyme(['int'], binding)
+        e = enzyme.Enzyme(['itt'], binding)
         d = utility.string_chars_indices(string)
         locus = 1 # sets index of unit to bind to; second 'G' assumed
         self.assertRaises(enzyme.InvalidLocus, e.attach, s, locus)

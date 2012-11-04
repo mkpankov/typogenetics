@@ -9,7 +9,7 @@ import itertools
 aminoacids = {
     'cut':'s', 'dlt':'s', 'swi':'r', 'mvr':'s', 
     'mvl':'s', 'cop':'r', 'off':'l', 
-    'ina':'s', 'inc':'r', 'ing':'r', 'int':'l', 
+    'ina':'s', 'inc':'r', 'ing':'r', 'itt':'l', 
     'rpy':'r', 'rpu':'l', 'lpy':'l', 'lpu':'l', 
 }
 
