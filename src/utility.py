@@ -11,3 +11,6 @@ def string_chars_indices(s):
             t += [i]
         d[l] = t
     return d
+
+def replace_by_index(s, i, r):
+    return s[:i] + r + s[i+1:]
