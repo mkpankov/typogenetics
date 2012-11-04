@@ -77,7 +77,9 @@ class Enzyme:
             elif c == 'vd-':
                 production, self.locus = f(production, self.locus)
             elif c == 'lcs':
-                self.locus = f(self.locus)
+                self.locus = f(production,self.locus)
             elif c == 'md-':
                 self.mode = f(self.mode)
+            elif c == 'ast':
+                self.active_strand = f(self.active_strand)
         yield production

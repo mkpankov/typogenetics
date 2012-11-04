@@ -16,15 +16,26 @@ class TranslationTest(unittest.TestCase):
         locus = 0
         e.attach(s, locus)
         result = list(e.translate())[0]
-        self.assertEquals(result, 'CAT')        
-    def testCorrectTranslation(self):
-        """Strand is translated by enzyme to produce set of new strands"""
-        string = 'TAGATCCAGTCCATGCA'
+        self.assertEquals(result, 'CAT') 
+
+    def testASimpleTranslation(self):
+        string = 'TAGATCCAGTCCATCGA'
         s = strand.Strand(string)
-        e = enzyme.Enzyme(['rpu', 'inc', 'cop', 'mvr', 'mvl', 'swi', 'lpu', 'int'], 'G')
+        e = enzyme.Enzyme(['rpu', 'inc'], 'G')
         locus = 1
         e.attach(s, locus)
-        result = e.translate()
+        self.assertEquals(e.locus, 8)
+        result = list(e.translate())[0]
+        self.assertEquals(result, 'TAGATCCAGTCCACTCGA')
+    def testCorrectTranslation(self):
+        """Strand is translated by enzyme to produce set of new strands"""
+        string = 'TAGATCCAGTCCATCGA'
+        s = strand.Strand(string)
+        e = enzyme.Enzyme(['rpu', 'inc', 'cop', 'mvr', 'mvl', 'swi', 'lpu', 'itt'], 'G')
+        locus = 1
+        e.attach(s, locus)
+        self.assertEquals(e.locus, 8)
+        result = list(e.translate())
         self.assertEquals(result, frozenset(['ACG', 'TAGATCCAGTCCACATCGA']))
 
     def testNotAttachedTranslation(self):

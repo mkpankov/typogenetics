@@ -56,7 +56,7 @@ classes = {
     'spa':'pun',
     'cut':'str',
     'dlt':'vd-',
-    'swi':'md-',
+    'swi':'ast',
     'mvr':'lcs',
     'mvl':'lcs',
     'cop':'md-',
@@ -83,20 +83,22 @@ def dlt(strand, locus):
 assert dlt('ABCDBCA',4) == ('ABCDCA',4)
 assert dlt('ACA',0) == ('CA',0)
 
-def swi():
-    pass
+def swi(active_strand):
+    return int(not active_strand)
+assert swi(1) == 0
+assert swi(0) == 1
 
-def mvr(locus):
+def mvr(production,locus):
     return locus + 1
 
-def mvl(locus):
+def mvl(production,locus):
     return locus - 1
 
-def cop():
-    pass
+def cop(mode):
+    return 'copy'
 
-def off():
-    pass
+def off(mode):
+    return 'no copy'
 
 def ina(strand, locus):
     return strand[:locus+1] + 'A' + strand[locus+1:], locus
@@ -117,14 +119,16 @@ assert itt('ABCDEFP',3) == ('ABCDTEFP', 3)
 def rpy():
     pass
 
-def rpu():
-    pass
+def rpu(strand, locus):
+    return min(strand.index('A',locus+1), strand.index('G',locus+1))
+assert rpu('ACGTAGTC', 3) == 4
 
 def lpy():
     pass
 
-def lpu():
-    pass
+def lpu(strand, locus):
+    return max(strand.index('A',0,locus), strand.index('G',0,locus))
+assert lpu('ACGTAGTC', 4) == 2
 
 
 class Aminoacid:
