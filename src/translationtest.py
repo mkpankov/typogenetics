@@ -30,7 +30,8 @@ class TranslationTest(unittest.TestCase):
     def testNotAttachedTranslation(self):
         """When enzyme isn't attached, it can't translate"""
         e = enzyme.Enzyme(['rpu'], 'A')
-        self.assertRaises(enzyme.NotAttached, e.translate)
+        i = e.translate()
+        self.assertRaises(enzyme.NotAttached, next, i)
 
 if __name__ == "__main__":
     unittest.main()
