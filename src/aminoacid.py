@@ -130,6 +130,34 @@ def lpu(strand, locus):
     return max(strand.index('A',0,locus), strand.index('G',0,locus))
 assert lpu('ACGTAGTC', 4) == 2
 
+class InvalidBase(ValueError):
+    pass
+
+def elementary_complement(base):
+    if base == 'A':
+        comp = 'T'
+    elif base == 'C':
+        comp = 'G'
+    elif base == 'G':
+        comp = 'C'
+    elif base == 'T':
+        comp = 'A'
+    else:
+        raise InvalidBase
+    return comp
+assert elementary_complement('A') == 'T'
+assert elementary_complement('C') == 'G'
+
+def complement(strand, start=0, stop=None):
+    if stop is None:
+        stop = len(strand)
+    c = [' '] * len(strand)
+    s = list(strand)
+    for i in range(start,stop):
+        c[i] = elementary_complement(s[i])
+    return ''.join(c).strip(' ')
+assert complement('ACGT') == 'TGCA'
+assert complement('AACC',1,3) == 'TG'
 
 class Aminoacid:
     def __init__(self, duplet):
