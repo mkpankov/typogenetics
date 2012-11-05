@@ -49,5 +49,66 @@ class AminoAcidsCheck(unittest.TestCase):
         """Exception is raised when not a string is supplied"""
         self.assertRaises(aminoacid.NotAString, aminoacid.Aminoacid, 42)
 
+class AminoAcidsRunCheck(unittest.TestCase):
+    def testMvrNoCopy(self):
+        strands = [list('ACGT')]
+        self.assertEquals(aminoacid.mvr(strands, 1, False), 2)
+    def testMvrCopy(self):
+        strands = [list('ACGTAC')]
+        self.assertEquals(aminoacid.mvr(strands, 0, True), 1)
+        self.assertEquals(strands, [list('ACGTAC'),list('TG    ')])
+        strands = [list('ACGTAC')]
+        self.assertEquals(aminoacid.mvr(strands, 1, True), 2)
+        self.assertEquals(strands, [list('ACGTAC'),list(' GC   ')])
+        strands = [list('ACGTAC')]
+        self.assertEquals(aminoacid.mvr(strands, 2, True), 3)
+        self.assertEquals(strands, [list('ACGTAC'),list('  CA  ')])
+    def testMvlNoCopy(self):
+        strands = [list('ACGT')]
+        self.assertEquals(aminoacid.mvl(strands, 1, False), 0)
+    def testMvlCopy(self):
+        strands = [list('ACGTAC')]
+        self.assertEquals(aminoacid.mvl(strands, 1, True), 0)
+        self.assertEquals(strands, [list('ACGTAC'),list('TG    ')])
+        strands = [list('ACGTAC')]
+        self.assertEquals(aminoacid.mvl(strands, 2, True), 1)
+        self.assertEquals(strands, [list('ACGTAC'),list(' GC   ')])
+        strands = [list('ACGTAC')]
+        self.assertEquals(aminoacid.mvl(strands, 3, True), 2)
+        self.assertEquals(strands, [list('ACGTAC'),list('  CA  ')])
+    def testRpyNoCopy(self):
+        self.assertEquals(aminoacid.rpy([list('ACGTAGTC')], 2), 3)
+    def testRpyCopy(self):
+        strands = [list('ACGT')]
+        self.assertEquals(aminoacid.rpy(strands, 0, True), 1)
+        self.assertEquals(strands, [list('ACGT'),list('TG  ')])
+        strands = [list('ACGT'),list('T')]
+        self.assertEquals(aminoacid.rpy(strands, 0, True), 1)
+        self.assertEquals(strands, [list('ACGT'),list('TG  ')])
+    def testASimpleCopyingTranslationByStage(self):
+        strands = [list('ACGT')]
+        ['cop', 'rpy', 'rpy', 'mvl', 'mvl', 'mvl', 'off', 'ina']
+        self.assertEquals(aminoacid.cop(False), True)
+
+        self.assertEquals(aminoacid.rpy(strands, 0, True), 1)
+        self.assertEquals(strands,[list('ACGT'), list('TG  ')])
+
+        self.assertEquals(aminoacid.rpy(strands, 1, True), 3)
+        self.assertEquals(strands,[list('ACGT'), list('TGCA')])
+
+        self.assertEquals(aminoacid.mvl(strands, 3, True), 2)
+        self.assertEquals(strands,[list('ACGT'), list('TGCA')])
+
+        self.assertEquals(aminoacid.mvl(strands, 2, True), 1)
+        self.assertEquals(strands,[list('ACGT'), list('TGCA')])
+
+        self.assertEquals(aminoacid.mvl(strands, 1, True), 0)
+        self.assertEquals(strands,[list('ACGT'), list('TGCA')])
+
+        self.assertEquals(aminoacid.off(True), False)
+
+        self.assertEquals(aminoacid.ina(strands, 0), ([list('AACGT'), list('TGCA')], 1))
+        self.assertEquals(strands,[list('AACGT'), list('TGCA')])
+
 if __name__ == "__main__":
     unittest.main()

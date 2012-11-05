@@ -15,8 +15,8 @@ class TranslationTest(unittest.TestCase):
         e = enzyme.Enzyme(['dlt', 'mvr', 'itt'], 'A')
         locus = 0
         e.attach(s, locus)
-        result = list(e.translate())[0]
-        self.assertEquals(result, 'CAT') 
+        result = next(e.translate())
+        self.assertEquals(result, [list('CAT')]) 
 
     def testASimpleTranslation(self):
         string = 'TAGATCCAGTCCATCGA'
@@ -25,8 +25,18 @@ class TranslationTest(unittest.TestCase):
         locus = 1
         e.attach(s, locus)
         self.assertEquals(e.locus, 8)
-        result = list(e.translate())[0]
-        self.assertEquals(result, 'TAGATCCAGTCCACTCGA')
+        result = next(e.translate())
+        self.assertEquals(result, [list('TAGATCCAGTCCACTCGA')])
+
+    def testASimpleCopyingTranslation(self):
+        string = 'ACGT'
+        s = strand.Strand(string)
+        e = enzyme.Enzyme(['cop', 'rpy', 'rpy', 'mvl', 'mvl', 'mvl', 'off', 'ina'], 'A')
+        locus = 0
+        e.attach(s, locus)
+        result = next(e.translate())
+        self.assertEquals(result, ['AACGT','TGCA'])
+
     def testCorrectTranslation(self):
         """Strand is translated by enzyme to produce set of new strands"""
         string = 'TAGATCCAGTCCATCGA'
@@ -35,8 +45,8 @@ class TranslationTest(unittest.TestCase):
         locus = 1
         e.attach(s, locus)
         self.assertEquals(e.locus, 8)
-        result = list(e.translate())
-        self.assertEquals(result, frozenset(['ACG', 'TAGATCCAGTCCACATCGA']))
+        result = next(e.translate())
+        self.assertEquals(result, ['ATG', 'TAGATCCAGTCCACATCGA'])
 
     def testNotAttachedTranslation(self):
         """When enzyme isn't attached, it can't translate"""

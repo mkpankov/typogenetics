@@ -32,6 +32,9 @@ assert get_single_from_frozenset(frozenset('A')) == 'A'
 class NotAttached(RuntimeError):
     pass
 
+class OffStrand(RuntimeError):
+    pass
+
 class Enzyme:
     """It's a machine operating on strands by means of instructions--Amino Acids"""
     def __init__(self, commands, binding):
@@ -49,7 +52,9 @@ class Enzyme:
             raise NotImplemented
         self.binding = Binding(binding)
         self.status = 'not attached'
-        self.mode = 'no copy'
+        self.copy = False
+        self.active_strand = 0
+        
     def attach(self, strand, locus):
         try:
             self.strand = strand
@@ -59,27 +64,35 @@ class Enzyme:
             self.locus = utility.string_chars_indices(strand.units)\
                 [get_single_from_frozenset(self.binding.value)][locus]
             self.status = 'attached'
+            self.production = [self.strand.units]
         except IndexError:
             raise InvalidLocus
 
     def translate(self):
         if self.status is None or self.status != 'attached':
             raise NotAttached
-        production = self.strand.units
         for a in self.commands:
             c = aminoacid.classes[a]
             f = getattr(aminoacid, a)
             if c == 'pun':
-                yield production
-                production = ''
+                yield self.production
+                self.production = ''
             elif c == 'str':
-                production = f(production, self.locus)
+                self.production = f(self.production, self.locus)
             elif c == 'vd-':
-                production, self.locus = f(production, self.locus)
+                self.production, self.locus = f(self.production, self.locus)
             elif c == 'lcs':
-                self.locus = f(production,self.locus)
+                self.locus = f(self.production,self.locus,self.copy)
             elif c == 'md-':
-                self.mode = f(self.mode)
+                old = self.copy
+                self.copy = f(self.copy)
+                if old == False and self.copy == True:
+                    self.production.append(aminoacid.complement(self.production[self.active_strand], self.locus, self.locus+1))
             elif c == 'ast':
+                old = self.active_strand
                 self.active_strand = f(self.active_strand)
-        yield production
+                if old != self.active_strand:
+                    self.production[self.active_strand] = self.production[self.active_strand][::-1]
+            if self.locus < 0 or self.locus >= len(self.production[self.active_strand]):
+                raise OffStrand
+        yield self.production

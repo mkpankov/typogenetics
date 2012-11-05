@@ -1,3 +1,4 @@
+import utility
 import bases
 
 """Amino Acids are instructions which are carried on strand by ribosome"""
@@ -75,60 +76,93 @@ def spa():
     pass
 
 def cut(strand, locus):
-    return frozenset([strand[:locus],strand[locus:]])
-assert cut('ABCD',2) == frozenset(['AB', 'CD'])
+    return [strand[:locus],strand[locus:]]
+assert cut(list('ABCD'),2) == [list('AB'), list('CD')]
 
-def dlt(strand, locus):
-    return strand[:locus] + strand[locus+1:], locus
-assert dlt('ABCDBCA',4) == ('ABCDCA',4)
-assert dlt('ACA',0) == ('CA',0)
+def dlt(strands, locus, copy=False, active=0):
+    del strands[active][locus]
+    return strands, locus
+assert dlt([list('ABCDBCA')],4) == ([list('ABCDCA')],4)
+assert dlt([list('ACA')],0) == ([list('CA')],0)
 
-def swi(active_strand):
-    return int(not active_strand)
+def swi(active):
+    return int(not active)
 assert swi(1) == 0
 assert swi(0) == 1
 
-def mvr(production,locus):
+def mvr(strands, locus, copy=False, active=0):
+    if copy:
+        ensure_complement(strands, locus, locus+1)
     return locus + 1
 
-def mvl(production,locus):
+def mvl(strands, locus, copy=False, active=0):
+    if copy:
+        ensure_complement(strands, locus-1, locus+1)
     return locus - 1
 
 def cop(mode):
-    return 'copy'
+    return True
 
 def off(mode):
-    return 'no copy'
+    return False
 
-def ina(strand, locus):
-    return strand[:locus+1] + 'A' + strand[locus+1:], locus
-assert ina('ABCDEFP',3) == ('ABCDAEFP', 3)
+def general_in(base, strands, locus, copy=False, active=0):
+    strands[active].insert(locus+1, base)
+    if copy:
+        other = swi(active)
+        strands[other].insert(locus+1, base)
+    return strands, locus+1
 
-def inc(strand, locus):
-    return strand[:locus+1] + 'C' + strand[locus+1:], locus
-assert inc('ABCDEFP',3) == ('ABCDCEFP', 3)
+def ina(strands, locus, copy=False, active=0):
+    return general_in('A', strands, locus, copy, active)
+assert ina([list('ABCDEFP')],3) == ([list('ABCDAEFP')], 4)
+assert ina([list('ABCDEFP')],6) == ([list('ABCDEFPA')], 7)
 
-def ing(strand, locus):
-    return strand[:locus+1] + 'G' + strand[locus+1:], locus
-assert ing('ABCDEFP',3) == ('ABCDGEFP', 3)
+def inc(strands, locus, copy=False, active=0):
+    return general_in('C', strands, locus, copy, active)
+assert inc([list('ABCDEFP')],3) == ([list('ABCDCEFP')], 4)
 
-def itt(strand, locus):
-    return strand[:locus+1] + 'T' + strand[locus+1:], locus
-assert itt('ABCDEFP',3) == ('ABCDTEFP', 3)
+def ing(strands, locus, copy=False, active=0):
+    return general_in('G', strands, locus, copy, active)
+assert ing([list('ABCDEFP')],3) == ([list('ABCDGEFP')], 4)
 
-def rpy():
-    pass
+def itt(strands, locus, copy=False, active=0):
+    return general_in('T', strands, locus, copy, active)
+assert itt([list('ABCDEFP')],3) == ([list('ABCDTEFP')], 4)
 
-def rpu(strand, locus):
-    return min(strand.index('A',locus+1), strand.index('G',locus+1))
-assert rpu('ACGTAGTC', 3) == 4
+def rpy(strands, locus, copy=False, active=0):
+    end = min(utility.find_fail_max(strands[active],'C',locus+1), 
+              utility.find_fail_max(strands[active],'T',locus+1))
+    if copy:
+        ensure_complement(strands,locus,end+1)
+    return end
+assert rpy(list(['ACGTAGTC']), 2) == 3
 
-def lpy():
-    pass
+def rpu(strands, locus, copy=False, active=0):
+    end = min(utility.find_fail_max(strands[active],'A',locus+1), 
+              utility.find_fail_max(strands[active],'G',locus+1))
+    if copy:
+        ensure_complement(strands,locus,end+1)
+    return end
+assert rpu(list(['ACGTAGTC']), 3) == 4
 
-def lpu(strand, locus):
-    return max(strand.index('A',0,locus), strand.index('G',0,locus))
-assert lpu('ACGTAGTC', 4) == 2
+def lpy(strands, locus, copy=False, active=0):
+    string = ''.join(strands[active])
+    beg = max(string.find('C',0,locus),
+              string.find('T',0,locus))
+    if copy:
+        ensure_complement(strands,beg,locus)
+    return beg
+assert lpy(list(['ACGTAGTC']), 2) == 1
+
+def lpu(strands, locus, copy=False, active=0):
+    string = ''.join(strands[active])
+    beg = max(string.find('A',0,locus),
+              string.find('G',0,locus))
+    if copy:
+        ensure_complement(strands,beg,locus)
+    return beg
+assert lpu(list(['ACGTAGTC']), 4) == 2
 
 class InvalidBase(ValueError):
     pass
@@ -148,16 +182,28 @@ def elementary_complement(base):
 assert elementary_complement('A') == 'T'
 assert elementary_complement('C') == 'G'
 
-def complement(strand, start=0, stop=None):
+def complement(strand_list, start=0, stop=None):
     if stop is None:
-        stop = len(strand)
-    c = [' '] * len(strand)
-    s = list(strand)
-    for i in range(start,stop):
-        c[i] = elementary_complement(s[i])
-    return ''.join(c).strip(' ')
-assert complement('ACGT') == 'TGCA'
-assert complement('AACC',1,3) == 'TG'
+        stop = len(strand_list)
+    if start < 0 or stop > len(strand_list):
+        raise IndexError
+    c = [' '] * len(strand_list)
+    for i in range(start, stop):
+        c[i] = elementary_complement(strand_list[i])
+    return c
+assert complement(list('ACGT')) == list('TGCA')
+assert complement(list('AACC'),1,2) == list(' T  ')
+assert complement(list('AACC'),1,3) == list(' TG ')
+assert complement(list('AACC'),1,4) == list(' TGG')
+
+def ensure_complement(strands, start=0, stop=None, active=0):
+    if stop is None:
+        stop = len(strands[active])
+    other = swi(active)
+    try:
+        strands[other] = complement(strands[active],start,stop)
+    except IndexError:
+        strands.append(complement(strands[active],start,stop))
 
 class Aminoacid:
     def __init__(self, duplet):

@@ -18,13 +18,13 @@ class StrandTest(unittest.TestCase):
     def testCorrectCreation(self):
         """Strand should contain correct string"""
         s = strand.Strand('ACGT')
-        self.assertEqual('ACGT', s.units)
+        self.assertEqual('ACGT', ''.join(s.units))
     def testSaneCreation(self):
         for length in range(4):
             for tup in itertools.product('ACGT', repeat=length):
                 string = ''.join(tup)
                 s = strand.Strand(string)
-                self.assertEqual(s.units, string)
+                self.assertEqual(''.join(s.units), string)
 
     def testIncorrectCreationBadString(self):
         """Strand should raise an exception in case of bad string"""

@@ -16,10 +16,10 @@ class Strand:
         else:
             raise NotAString
 
-        self.units = string
+        self.units = list(string)
 
     def __repr__(self):
-        return 'Strand("{0}")'.format(self.units)
+        return 'Strand("{0}")'.format(''.join(self.units))
 
     def __str__(self):
-        return 'Strand("{0}")'.format(self.units)
+        return 'Strand("{0}")'.format(''.join(self.units))
