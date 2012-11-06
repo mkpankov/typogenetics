@@ -92,7 +92,7 @@ assert swi(0) == 1
 
 def mvr(strands, locus, copy=False, active=0):
     if copy:
-        ensure_complement(strands, locus, locus+1)
+        ensure_complement(strands, locus, locus+2)
     return locus + 1
 
 def mvl(strands, locus, copy=False, active=0):
@@ -185,11 +185,8 @@ assert elementary_complement('C') == 'G'
 def complement(strand_list, start=0, stop=None):
     if stop is None:
         stop = len(strand_list)
-    if start < 0 or stop > len(strand_list):
-        raise IndexError
     c = [' '] * len(strand_list)
-    for i in range(start, stop):
-        c[i] = elementary_complement(strand_list[i])
+    c[start:stop] = map(elementary_complement,strand_list[start:stop])
     return c
 assert complement(list('ACGT')) == list('TGCA')
 assert complement(list('AACC'),1,2) == list(' T  ')
@@ -201,7 +198,8 @@ def ensure_complement(strands, start=0, stop=None, active=0):
         stop = len(strands[active])
     other = swi(active)
     try:
-        strands[other] = complement(strands[active],start,stop)
+        strands[other].extend([' '] * (len(strands[active]) - len(strands[other])))
+        strands[other][start:stop] = complement(strands[active],start,stop)[start:stop]
     except IndexError:
         strands.append(complement(strands[active],start,stop))
 
