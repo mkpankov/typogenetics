@@ -46,7 +46,7 @@ class TranslationTest(unittest.TestCase):
         e.attach(s, locus)
         self.assertEquals(e.locus, 8)
         result = next(e.translate())
-        self.assertEquals(result, ['ATG', 'TAGATCCAGTCCACATCGA'])
+        self.assertEquals(result, [list('ATG'), list('TAGATCCAGTCCACATCGA')])
 
     def testNotAttachedTranslation(self):
         """When enzyme isn't attached, it can't translate"""
