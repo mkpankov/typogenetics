@@ -87,7 +87,6 @@ class AminoAcidsRunCheck(unittest.TestCase):
         self.assertEquals(strands, [list('ACGT'),list('TG  ')])
     def testASimpleCopyingTranslationByStage(self):
         strands = [list('ACGT')]
-        ['cop', 'rpy', 'rpy', 'mvl', 'mvl', 'mvl', 'off', 'ina']
         self.assertEquals(aminoacid.cop(False), True)
 
         self.assertEquals(aminoacid.rpy(strands, 0, True), 1)
