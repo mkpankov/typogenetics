@@ -108,6 +108,33 @@ class AminoAcidsRunCheck(unittest.TestCase):
 
         self.assertEquals(aminoacid.ina(strands, 0), ([list('AACGT'), list('TGCA')], 1))
         self.assertEquals(strands,[list('AACGT'), list('TGCA')])
+    def testACopyingTranslationByStage(self):
+        strands = [list('TAGATCCAGTCCATCGA')]
+        copy = False
+        locus = 8 # Position of second 'G'
+        active_strand = 0
+
+        locus = aminoacid.rpy(strands, locus, copy)
+        self.assertEquals(locus, 12)
+        self.assertEquals(strands, [list('TAGATCCAGTCCATCGA')])
+
+        strands, locus = aminoacid.inc(strands, locus, copy)
+        self.assertEquals(locus, 13)
+        self.assertEquals(strands, [list('TAGATCCAGTCCACTCGA')])
+
+        copy = aminoacid.cop(copy)
+        strands.append(aminoacid.complement(strands[active_strand], locus, locus+1))
+        self.assertEquals(locus, 13)
+        self.assertEquals(strands, [list('TAGATCCAGTCCACTCGA'),list('             G    ')])
+
+        locus = aminoacid.mvr(strands, locus, copy)
+        self.assertEquals(locus, 14)
+        self.assertEquals(strands, [list('TAGATCCAGTCCACTCGA'),list('             GA   ')])
+
+        locus = aminoacid.mvl(strands, locus, copy)
+        self.assertEquals(locus, 13)
+        self.assertEquals(strands, [list('TAGATCCAGTCCACTCGA'),list('             GA   ')])
+
 
 if __name__ == "__main__":
     unittest.main()
