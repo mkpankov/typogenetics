@@ -52,61 +52,61 @@ class AminoAcidsCheck(unittest.TestCase):
 class AminoAcidsRunCheck(unittest.TestCase):
     def testMvrNoCopy(self):
         strands = [list('ACGT')]
-        self.assertEquals(aminoacid.mvr(strands, 1, False), 2)
+        self.assertEquals(aminoacid.mvr(strands, 1, False, 0), 2)
     def testMvrCopy(self):
         strands = [list('ACGTAC')]
-        self.assertEquals(aminoacid.mvr(strands, 0, True), 1)
+        self.assertEquals(aminoacid.mvr(strands, 0, True, 0), 1)
         self.assertEquals(strands, [list('ACGTAC'),list('TG    ')])
         strands = [list('ACGTAC')]
-        self.assertEquals(aminoacid.mvr(strands, 1, True), 2)
+        self.assertEquals(aminoacid.mvr(strands, 1, True, 0), 2)
         self.assertEquals(strands, [list('ACGTAC'),list(' GC   ')])
         strands = [list('ACGTAC')]
-        self.assertEquals(aminoacid.mvr(strands, 2, True), 3)
+        self.assertEquals(aminoacid.mvr(strands, 2, True, 0), 3)
         self.assertEquals(strands, [list('ACGTAC'),list('  CA  ')])
     def testMvlNoCopy(self):
         strands = [list('ACGT')]
-        self.assertEquals(aminoacid.mvl(strands, 1, False), 0)
+        self.assertEquals(aminoacid.mvl(strands, 1, False, 0), 0)
     def testMvlCopy(self):
         strands = [list('ACGTAC')]
-        self.assertEquals(aminoacid.mvl(strands, 1, True), 0)
+        self.assertEquals(aminoacid.mvl(strands, 1, True, 0), 0)
         self.assertEquals(strands, [list('ACGTAC'),list('TG    ')])
         strands = [list('ACGTAC')]
-        self.assertEquals(aminoacid.mvl(strands, 2, True), 1)
+        self.assertEquals(aminoacid.mvl(strands, 2, True, 0), 1)
         self.assertEquals(strands, [list('ACGTAC'),list(' GC   ')])
         strands = [list('ACGTAC')]
-        self.assertEquals(aminoacid.mvl(strands, 3, True), 2)
+        self.assertEquals(aminoacid.mvl(strands, 3, True, 0), 2)
         self.assertEquals(strands, [list('ACGTAC'),list('  CA  ')])
     def testRpyNoCopy(self):
-        self.assertEquals(aminoacid.rpy([list('ACGTAGTC')], 2), 3)
+        self.assertEquals(aminoacid.rpy([list('ACGTAGTC')], 2, False, 0), 3)
     def testRpyCopy(self):
         strands = [list('ACGT')]
-        self.assertEquals(aminoacid.rpy(strands, 0, True), 1)
+        self.assertEquals(aminoacid.rpy(strands, 0, True, 0), 1)
         self.assertEquals(strands, [list('ACGT'),list('TG  ')])
         strands = [list('ACGT'),list('T')]
-        self.assertEquals(aminoacid.rpy(strands, 0, True), 1)
+        self.assertEquals(aminoacid.rpy(strands, 0, True, 0), 1)
         self.assertEquals(strands, [list('ACGT'),list('TG  ')])
     def testASimpleCopyingTranslationByStage(self):
         strands = [list('ACGT')]
         self.assertEquals(aminoacid.cop(False), True)
 
-        self.assertEquals(aminoacid.rpy(strands, 0, True), 1)
+        self.assertEquals(aminoacid.rpy(strands, 0, True, 0), 1)
         self.assertEquals(strands,[list('ACGT'), list('TG  ')])
 
-        self.assertEquals(aminoacid.rpy(strands, 1, True), 3)
+        self.assertEquals(aminoacid.rpy(strands, 1, True, 0), 3)
         self.assertEquals(strands,[list('ACGT'), list('TGCA')])
 
-        self.assertEquals(aminoacid.mvl(strands, 3, True), 2)
+        self.assertEquals(aminoacid.mvl(strands, 3, True, 0), 2)
         self.assertEquals(strands,[list('ACGT'), list('TGCA')])
 
-        self.assertEquals(aminoacid.mvl(strands, 2, True), 1)
+        self.assertEquals(aminoacid.mvl(strands, 2, True, 0), 1)
         self.assertEquals(strands,[list('ACGT'), list('TGCA')])
 
-        self.assertEquals(aminoacid.mvl(strands, 1, True), 0)
+        self.assertEquals(aminoacid.mvl(strands, 1, True, 0), 0)
         self.assertEquals(strands,[list('ACGT'), list('TGCA')])
 
         self.assertEquals(aminoacid.off(True), False)
 
-        self.assertEquals(aminoacid.ina(strands, 0), ([list('AACGT'), list('TGCA')], 1))
+        self.assertEquals(aminoacid.ina(strands, 0, False, 0), ([list('AACGT'), list('TGCA')], 1))
         self.assertEquals(strands,[list('AACGT'), list('TGCA')])
     def testACopyingTranslationByStage(self):
         strands = [list('TAGATCCAGTCCATCGA')]
@@ -114,11 +114,11 @@ class AminoAcidsRunCheck(unittest.TestCase):
         locus = 8 # Position of second 'G'
         active_strand = 0
 
-        locus = aminoacid.rpu(strands, locus, copy)
+        locus = aminoacid.rpu(strands, locus, copy, active_strand)
         self.assertEquals(locus, 12)
         self.assertEquals(strands, [list('TAGATCCAGTCCATCGA')])
 
-        strands, locus = aminoacid.inc(strands, locus, copy)
+        strands, locus = aminoacid.inc(strands, locus, copy, active_strand)
         self.assertEquals(locus, 13)
         self.assertEquals(strands, [list('TAGATCCAGTCCACTCGA')])
 
@@ -127,23 +127,26 @@ class AminoAcidsRunCheck(unittest.TestCase):
         self.assertEquals(locus, 13)
         self.assertEquals(strands, [list('TAGATCCAGTCCACTCGA'),list('             G    ')])
 
-        locus = aminoacid.mvr(strands, locus, copy)
+        locus = aminoacid.mvr(strands, locus, copy, active_strand)
         self.assertEquals(locus, 14)
         self.assertEquals(strands, [list('TAGATCCAGTCCACTCGA'),list('             GA   ')])
 
-        locus = aminoacid.mvl(strands, locus, copy)
+        locus = aminoacid.mvl(strands, locus, copy, active_strand)
         self.assertEquals(locus, 13)
         self.assertEquals(strands, [list('TAGATCCAGTCCACTCGA'),list('             GA   ')])
 
         active_strand = aminoacid.swi(active_strand)
+        strands[0] = strands[0][::-1]
+        strands[1] = strands[1][::-1]
+        locus = len(strands[active_strand]) - locus - 1
         self.assertEquals(active_strand, 1)
         self.assertEquals(strands, [list('AGCTCACCTGACCTAGAT'),list('   AG             ')])
 
-        locus = aminoacid.lpu(strands, locus, copy)
+        locus = aminoacid.lpu(strands, locus, copy, active_strand)
         self.assertEquals(locus, 3)
         self.assertEquals(strands, [list('AGCTCACCTGACCTAGAT'),list('   AG             ')])
 
-        strands, locus = aminoacid.itt(strands, locus, copy)
+        strands, locus = aminoacid.itt(strands, locus, copy, active_strand)
         self.assertEquals(locus, 4)
         self.assertEquals(strands, [list('AGCTACACCTGACCTAGAT'),list('   ATG             ')])
 
