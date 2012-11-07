@@ -134,7 +134,7 @@ def rpy(strands, locus, copy=False, active=0):
     end = min(utility.find_fail_max(strands[active],'C',locus+1), 
               utility.find_fail_max(strands[active],'T',locus+1))
     if copy:
-        ensure_complement(strands,locus,end+1)
+        ensure_complement(strands,locus,end+1,active)
     return end
 assert rpy(list(['ACGTAGTC']), 2) == 3
 
@@ -142,7 +142,7 @@ def rpu(strands, locus, copy=False, active=0):
     end = min(utility.find_fail_max(strands[active],'A',locus+1), 
               utility.find_fail_max(strands[active],'G',locus+1))
     if copy:
-        ensure_complement(strands,locus,end+1)
+        ensure_complement(strands,locus,end+1,active)
     return end
 assert rpu(list(['ACGTAGTC']), 3) == 4
 
@@ -151,7 +151,7 @@ def lpy(strands, locus, copy=False, active=0):
     beg = max(string.find('C',0,locus),
               string.find('T',0,locus))
     if copy:
-        ensure_complement(strands,beg,locus)
+        ensure_complement(strands,beg,locus,active)
     return beg
 assert lpy(list(['ACGTAGTC']), 2) == 1
 
@@ -160,7 +160,7 @@ def lpu(strands, locus, copy=False, active=0):
     beg = max(string.find('A',0,locus),
               string.find('G',0,locus))
     if copy:
-        ensure_complement(strands,beg,locus)
+        ensure_complement(strands,beg,locus,active)
     return beg
 assert lpu(list(['ACGTAGTC']), 4) == 2
 
