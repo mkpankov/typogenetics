@@ -135,6 +135,18 @@ class AminoAcidsRunCheck(unittest.TestCase):
         self.assertEquals(locus, 13)
         self.assertEquals(strands, [list('TAGATCCAGTCCACTCGA'),list('             GA   ')])
 
+        active_strand = aminoacid.swi(active_strand)
+        self.assertEquals(active_strand, 1)
+        self.assertEquals(strands, [list('AGCTCACCTGACCTAGAT'),list('   AG             ')])
+
+        locus = aminoacid.lpu(strands, locus, copy)
+        self.assertEquals(locus, 3)
+        self.assertEquals(strands, [list('AGCTCACCTGACCTAGAT'),list('   AG             ')])
+
+        strands, locus = aminoacid.itt(strands, locus, copy)
+        self.assertEquals(locus, 4)
+        self.assertEquals(strands, [list('AGCTACACCTGACCTAGAT'),list('   ATG             ')])
+
 
 if __name__ == "__main__":
     unittest.main()
