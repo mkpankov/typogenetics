@@ -80,9 +80,9 @@ class Enzyme:
             elif c == 'str':
                 self.production = f(self.production, self.locus)
             elif c == 'vd-':
-                self.production, self.locus = f(self.production, self.locus)
+                self.production, self.locus = f(self.production, self.locus, self.copy, self.active_strand)
             elif c == 'lcs':
-                self.locus = f(self.production,self.locus,self.copy)
+                self.locus = f(self.production,self.locus,self.copy,self.active_strand)
             elif c == 'md-':
                 old = self.copy
                 self.copy = f(self.copy)
@@ -98,7 +98,7 @@ class Enzyme:
                     self.production[0] = self.production[0][::-1]
                     self.production[1] = self.production[1][::-1]
                     # We also change locus to account for change of orientation
-                    self.locus = len(self.production[active_strand]) - self.locus - 1
+                    self.locus = len(self.production[self.active_strand]) - self.locus - 1
 
             if self.locus < 0 or self.locus >= len(self.production[self.active_strand]):
                 raise OffStrand
