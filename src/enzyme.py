@@ -92,7 +92,14 @@ class Enzyme:
                 old = self.active_strand
                 self.active_strand = f(self.active_strand)
                 if old != self.active_strand:
-                    self.production[self.active_strand] = self.production[self.active_strand][::-1]
+                    assert len(self.production[0]) == len(self.production[1])
+                    # We reverse both lists to make commands of search and move 
+                    # work in the right direction
+                    self.production[0] = self.production[0][::-1]
+                    self.production[1] = self.production[1][::-1]
+                    # We also change locus to account for change of orientation
+                    self.locus = len(self.production[active_strand]) - self.locus - 1
+
             if self.locus < 0 or self.locus >= len(self.production[self.active_strand]):
                 raise OffStrand
         yield self.production
