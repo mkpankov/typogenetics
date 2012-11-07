@@ -114,7 +114,7 @@ class AminoAcidsRunCheck(unittest.TestCase):
         locus = 8 # Position of second 'G'
         active_strand = 0
 
-        locus = aminoacid.rpy(strands, locus, copy)
+        locus = aminoacid.rpu(strands, locus, copy)
         self.assertEquals(locus, 12)
         self.assertEquals(strands, [list('TAGATCCAGTCCATCGA')])
 
