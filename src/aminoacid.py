@@ -110,7 +110,7 @@ def general_in(base, strands, locus, copy=False, active=0):
     strands[active].insert(locus+1, base)
     if copy:
         other = swi(active)
-        strands[other].insert(locus+1, base)
+        strands[other].insert(locus+1, elementary_complement(base))
     return strands, locus+1
 
 def ina(strands, locus, copy=False, active=0):
