@@ -92,12 +92,12 @@ assert swi(0) == 1
 
 def mvr(strands, locus, copy=False, active=0):
     if copy:
-        ensure_complement(strands, locus, locus+2)
+        ensure_complement(strands, locus, locus+2, active)
     return locus + 1
 
 def mvl(strands, locus, copy=False, active=0):
     if copy:
-        ensure_complement(strands, locus-1, locus+1)
+        ensure_complement(strands, locus-1, locus+1, active)
     return locus - 1
 
 def cop(mode):
