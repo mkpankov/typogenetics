@@ -173,6 +173,18 @@ class AminoAcidsRunCheck(unittest.TestCase):
         self.assertEquals(locus, 4)
         self.assertEquals(strands, [list('AGCTACACCTGACCTAGAT'),
                                     list('   ATG             ')])
+    
+    def testInsertionAfterCopy(self):
+        strands = [list('ACGTTGCA')]
+        locus = 0
+        active_strand = 0
+        copy = False
+        strands.append(aminoacid.complement(strands[active_strand],
+                                            locus, locus + 1))
+        strands, locus = aminoacid.ina(strands, locus, copy, active_strand)
+        self.assertEquals(locus, 1)
+        # This behaviour is currently incorrect logically
+        self.assertEquals(strands, [list('AACGTTGCA'), list('T       ')])
 
 
 if __name__ == "__main__":
