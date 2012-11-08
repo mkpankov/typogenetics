@@ -1,10 +1,13 @@
 import bases
 
+
 class NotInSet(ValueError):
     pass
 
+
 class NotAString(TypeError):
     pass
+
 
 class Strand:
     """It's a sequence of units, occupied by bases.

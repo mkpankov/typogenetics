@@ -5,9 +5,10 @@
 import utility
 import unittest
 
+
 class StringCharsIndicesCheck(unittest.TestCase):
     def testCorrectRun(self):
-        self.assertEquals(utility.string_chars_indices('ABCDABCD'), 
+        self.assertEquals(utility.string_chars_indices('ABCDABCD'),
             {'A': [0, 4], 'B': [1, 5], 'C': [2, 6], 'D': [3, 7]})
 
 
