@@ -12,8 +12,6 @@ def string_chars_indices(s):
         d[l] = t
     return d
 
-def replace_by_index(s, i, r):
-    return s[:i] + r + s[i+1:]
 
 def find_fail_max(string_list, sub, start=0, end=None):
     string = ''.join(string_list)
