@@ -38,7 +38,7 @@ class TranslationTest(unittest.TestCase):
         locus = 0
         e.attach(s, locus)
         result = next(e.translate())
-        self.assertEquals(result, [list('AACGT'), list('TGCA')])
+        self.assertEquals(result, [list('AACGT'), list('T GCA')])
 
     def testCorrectTranslation(self):
         """Strand is translated by enzyme to produce set of new strands"""

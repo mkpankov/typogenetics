@@ -120,9 +120,16 @@ def off(mode):
 
 def general_in(base, strands, locus, copy, active):
     strands[active].insert(locus + 1, base)
+    other = swi(active)
     if copy:
-        other = swi(active)
         strands[other].insert(locus + 1, elementary_complement(base))
+    else:
+        try:
+            strands[other].insert(locus + 1, ' ')
+        except IndexError:
+            # In case we've got this exception there's no other strand
+            # paired with this one
+            pass
     return strands, locus + 1
 
 

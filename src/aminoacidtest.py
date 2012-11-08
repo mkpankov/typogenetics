@@ -121,8 +121,8 @@ class AminoAcidsRunCheck(unittest.TestCase):
         self.assertEquals(aminoacid.off(True), False)
 
         self.assertEquals(aminoacid.ina(strands, 0, False, 0),
-                          ([list('AACGT'), list('TGCA')], 1))
-        self.assertEquals(strands, [list('AACGT'), list('TGCA')])
+                          ([list('AACGT'), list('T GCA')], 1))
+        self.assertEquals(strands, [list('AACGT'), list('T GCA')])
 
     def testACopyingTranslationByStage(self):
         strands = [list('TAGATCCAGTCCATCGA')]
@@ -183,8 +183,7 @@ class AminoAcidsRunCheck(unittest.TestCase):
                                             locus, locus + 1))
         strands, locus = aminoacid.ina(strands, locus, copy, active_strand)
         self.assertEquals(locus, 1)
-        # This behaviour is currently incorrect logically
-        self.assertEquals(strands, [list('AACGTTGCA'), list('T       ')])
+        self.assertEquals(strands, [list('AACGTTGCA'), list('T        ')])
 
 
 if __name__ == "__main__":
