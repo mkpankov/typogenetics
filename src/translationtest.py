@@ -18,17 +18,21 @@ class SimpleTranslationCheck(unittest.TestCase):
 
     def test_translation_by_stages(self):
         t = Translation(enzyme=e, strand=s, binding_location=b)
-        l = t.locus
-        self.assertEquals(l, 0)
+
         i = next(t.translate_by_stage())
         s_i, action, l_i, do_copy = i
-        print s_i, action, l_i, do_copy
+        self.assertEquals(s_i, Strand(list('ACGT')))
+        self.assertEquals(action, '')
+        self.assertEquals(l, 0)
+
+        i = next(t.translate_by_stage())
+        s_i, action, l_i, do_copy = i
         self.assertEquals(s_i, Strand(list('ACGT')))
         self.assertEquals(action, 'rpu')
         self.assertEquals(l_i, 2)
+
         i = next(t.translate_by_stage())
         s_i, action, l_i, do_copy = i
-        print s_i, action, l_i, do_copy
         self.assertEquals(s_i, Strand(list('ACGAT')))
         self.assertEquals(action, 'ina')
         self.assertEquals(l_i, 3)
@@ -51,11 +55,15 @@ class SimpleTranslationCheck(unittest.TestCase):
             self.assertEquals(a_i, actions[i])
             self.assertEquals(l_i, locuses[i])
 
+    def test_stray_aminoacid_application:
         t = Translation(enzyme=e, strand=s, binding_location=b)
+        t.apply_aminoacid('cut')
+        s, a, l, c = t.context
+        self.assertEquals(s, [list('A CGT')])
+        self.assertEquals(a, 'cut')
+        self.assertEquals(l, 0)
+        self.assertEquals(c, False)
 
-    def test_stray_aminoacid_application
-        t = Translation(enzyme=e, strand=s, binding_location=b)
-        
 
 if __name__ == "__main__":
     unittest.main()
